@@ -8,8 +8,7 @@ import {
   Flame, 
   Sparkles, 
   RotateCcw,
-  Share2,
-  Coffee
+  Share2
 } from "lucide-react";
 
 interface ResultCardProps {
@@ -38,12 +37,17 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
       <Card className="p-8 md:p-10 overflow-visible">
         <div className="flex flex-col items-center text-center gap-6">
           <div 
-            className="w-24 h-24 rounded-full flex items-center justify-center shadow-lg"
+            className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-xl"
             style={{ 
-              background: `linear-gradient(135deg, ${result.gradientColors.join(", ")})` 
+              boxShadow: `0 0 0 4px ${result.gradientColors[1]}40, 0 25px 50px -12px rgba(0, 0, 0, 0.25)`
             }}
           >
-            <Coffee className="w-12 h-12 text-white drop-shadow-md" />
+            <img
+              src={result.image}
+              alt={result.drinkName}
+              className="w-full h-full object-cover"
+              data-testid="img-drink"
+            />
           </div>
 
           <div>

@@ -1,5 +1,16 @@
 import type { PersonalityTrait } from "./personalityData";
 
+import starlightMochaImg from "@assets/generated_images/starlight_mocha_coffee_drink.png";
+import velvetSunriseImg from "@assets/generated_images/velvet_sunrise_tea_drink.png";
+import midnightBloomImg from "@assets/generated_images/midnight_bloom_berry_drink.png";
+import goldenHourImg from "@assets/generated_images/golden_hour_turmeric_latte.png";
+import forestWhisperImg from "@assets/generated_images/forest_whisper_matcha_drink.png";
+import oceanBreezeImg from "@assets/generated_images/ocean_breeze_blue_refresher.png";
+import emberChaiImg from "@assets/generated_images/ember_chai_spiced_latte.png";
+import cloudNineImg from "@assets/generated_images/cloud_nine_vanilla_frappe.png";
+import sageSerenityImg from "@assets/generated_images/sage_serenity_herbal_tea.png";
+import royalVelvetImg from "@assets/generated_images/royal_velvet_red_drink.png";
+
 export interface FlavorProfile {
   temperature: "Iced" | "Warm" | "Hot" | "Frozen";
   sweetness: "Unsweetened" | "Lightly Sweet" | "Balanced" | "Sweet" | "Decadent";
@@ -13,6 +24,7 @@ export interface DrinkResult {
   flavorProfile: FlavorProfile;
   whyMatch: string;
   gradientColors: string[];
+  image: string;
 }
 
 const drinkTemplates = [
@@ -23,6 +35,7 @@ const drinkTemplates = [
     intensity: ["Medium", "Bold"] as const,
     baseNotes: ["dark chocolate", "espresso", "vanilla bean"],
     gradients: ["#2C1810", "#8B4513", "#D4AF37"],
+    image: starlightMochaImg,
   },
   {
     name: "Velvet Sunrise",
@@ -31,6 +44,7 @@ const drinkTemplates = [
     intensity: ["Mild", "Medium"] as const,
     baseNotes: ["honey", "chamomile", "citrus zest"],
     gradients: ["#FFB347", "#FF7F50", "#FF6B6B"],
+    image: velvetSunriseImg,
   },
   {
     name: "Midnight Bloom",
@@ -39,6 +53,7 @@ const drinkTemplates = [
     intensity: ["Bold", "Intense"] as const,
     baseNotes: ["lavender", "blueberry", "dark berry"],
     gradients: ["#4A148C", "#7B1FA2", "#9C27B0"],
+    image: midnightBloomImg,
   },
   {
     name: "Golden Hour Latte",
@@ -47,6 +62,7 @@ const drinkTemplates = [
     intensity: ["Medium", "Mild"] as const,
     baseNotes: ["turmeric", "oat milk", "cinnamon"],
     gradients: ["#D4AF37", "#F5DEB3", "#FFE4B5"],
+    image: goldenHourImg,
   },
   {
     name: "Forest Whisper",
@@ -55,6 +71,7 @@ const drinkTemplates = [
     intensity: ["Delicate", "Mild"] as const,
     baseNotes: ["matcha", "pine", "eucalyptus"],
     gradients: ["#1B5E20", "#2E7D32", "#4CAF50"],
+    image: forestWhisperImg,
   },
   {
     name: "Ocean Breeze Refresher",
@@ -63,6 +80,7 @@ const drinkTemplates = [
     intensity: ["Delicate", "Medium"] as const,
     baseNotes: ["coconut", "blue spirulina", "lime"],
     gradients: ["#00BCD4", "#4DD0E1", "#80DEEA"],
+    image: oceanBreezeImg,
   },
   {
     name: "Ember Chai",
@@ -71,6 +89,7 @@ const drinkTemplates = [
     intensity: ["Bold", "Intense"] as const,
     baseNotes: ["cardamom", "ginger", "black pepper"],
     gradients: ["#BF360C", "#E64A19", "#FF5722"],
+    image: emberChaiImg,
   },
   {
     name: "Cloud Nine Frappe",
@@ -79,6 +98,7 @@ const drinkTemplates = [
     intensity: ["Mild", "Medium"] as const,
     baseNotes: ["marshmallow", "vanilla cloud", "whipped cream"],
     gradients: ["#ECEFF1", "#B0BEC5", "#90A4AE"],
+    image: cloudNineImg,
   },
   {
     name: "Sage Serenity",
@@ -87,6 +107,7 @@ const drinkTemplates = [
     intensity: ["Delicate", "Mild"] as const,
     baseNotes: ["sage", "honey", "white tea"],
     gradients: ["#AED581", "#8BC34A", "#689F38"],
+    image: sageSerenityImg,
   },
   {
     name: "Royal Velvet",
@@ -95,6 +116,7 @@ const drinkTemplates = [
     intensity: ["Medium", "Bold"] as const,
     baseNotes: ["red velvet", "cream cheese", "cocoa"],
     gradients: ["#C62828", "#D32F2F", "#E53935"],
+    image: royalVelvetImg,
   },
 ];
 
@@ -171,5 +193,6 @@ export function generateDrink(selectedTraits: PersonalityTrait[]): DrinkResult {
     },
     whyMatch,
     gradientColors: template.gradients,
+    image: template.image,
   };
 }
