@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import html2canvas from "html2canvas";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +10,8 @@ import {
   Flame, 
   Sparkles, 
   RotateCcw,
-  Share2
+  Share2,
+  Download
 } from "lucide-react";
 
 interface ResultCardProps {
@@ -17,6 +20,31 @@ interface ResultCardProps {
 }
 
 export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadCard = async () => {
+    if (!cardRef.current) return;
+    
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: "#f3f0e9",
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      });
+      
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `${result.drinkName.replace(/\s+/g, "-").toLowerCase()}-personality-drink.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Failed to download card:", error);
+      alert("Failed to download card image. Please try again.");
+    }
+  };
+
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -34,7 +62,7 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-fade-in">
-      <Card className="p-8 md:p-10 overflow-visible">
+      <Card ref={cardRef} className="p-8 md:p-10 overflow-visible bg-background">
         <div className="flex flex-col items-center text-center gap-6">
           <div 
             className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-xl"
@@ -128,23 +156,34 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full">
+          <div className="flex flex-col gap-3 w-full">
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <Button
+                onClick={onBlendAgain}
+                className="flex-1 font-['Montserrat'] font-semibold"
+                data-testid="button-blend-again"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Blend Again
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleShare}
+                className="flex-1 font-['Montserrat'] font-semibold"
+                data-testid="button-share"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share Result
+              </Button>
+            </div>
             <Button
-              onClick={onBlendAgain}
-              className="flex-1 font-['Montserrat'] font-semibold"
-              data-testid="button-blend-again"
+              variant="secondary"
+              onClick={handleDownloadCard}
+              className="w-full font-['Montserrat'] font-semibold"
+              data-testid="button-download-card"
             >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Blend Again
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleShare}
-              className="flex-1 font-['Montserrat'] font-semibold"
-              data-testid="button-share"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Result
+              <Download className="w-4 h-4 mr-2" />
+              Download Card
             </Button>
           </div>
         </div>
