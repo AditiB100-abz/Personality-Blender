@@ -1,12 +1,12 @@
 import ResultCard from "../ResultCard";
 import type { DrinkResult } from "@/lib/drinkGenerator";
-import starlightMochaImg from "@assets/generated_images/starlight_mocha_coffee_drink.png";
+import starlightMochaImg from "@assets/generated_images/iced_starlight_mocha_drink.png";
 
 const mockResult: DrinkResult = {
   drinkName: "Starlight Mocha",
-  description: "A hot masterpiece crafted for souls who embody creative and empathetic. This bold blend offers a balanced experience that evolves with every sip.",
+  description: "An iced masterpiece crafted for souls who embody creative and empathetic. This bold blend offers a balanced experience that evolves with every sip.",
   flavorProfile: {
-    temperature: "Hot",
+    temperature: "Iced",
     sweetness: "Balanced",
     intensity: "Bold",
     notes: ["dark chocolate", "espresso", "vanilla bean", "artistic swirl", "heart-warming essence"],

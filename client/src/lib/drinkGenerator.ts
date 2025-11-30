@@ -1,15 +1,15 @@
 import type { PersonalityTrait } from "./personalityData";
 
-import starlightMochaImg from "@assets/generated_images/starlight_mocha_coffee_drink.png";
-import velvetSunriseImg from "@assets/generated_images/velvet_sunrise_tea_drink.png";
-import midnightBloomImg from "@assets/generated_images/midnight_bloom_berry_drink.png";
-import goldenHourImg from "@assets/generated_images/golden_hour_turmeric_latte.png";
-import forestWhisperImg from "@assets/generated_images/forest_whisper_matcha_drink.png";
-import oceanBreezeImg from "@assets/generated_images/ocean_breeze_blue_refresher.png";
-import emberChaiImg from "@assets/generated_images/ember_chai_spiced_latte.png";
-import cloudNineImg from "@assets/generated_images/cloud_nine_vanilla_frappe.png";
-import sageSerenityImg from "@assets/generated_images/sage_serenity_herbal_tea.png";
-import royalVelvetImg from "@assets/generated_images/royal_velvet_red_drink.png";
+import starlightMochaImg from "@assets/generated_images/iced_starlight_mocha_drink.png";
+import velvetSunriseImg from "@assets/generated_images/warm_velvet_sunrise_tea.png";
+import midnightBloomImg from "@assets/generated_images/frozen_midnight_bloom_drink.png";
+import goldenHourImg from "@assets/generated_images/warm_golden_hour_latte.png";
+import forestWhisperImg from "@assets/generated_images/hot_forest_whisper_matcha.png";
+import oceanBreezeImg from "@assets/generated_images/frozen_ocean_breeze_refresher.png";
+import emberChaiImg from "@assets/generated_images/hot_ember_chai_latte.png";
+import cloudNineImg from "@assets/generated_images/frozen_cloud_nine_frappe.png";
+import sageSerenityImg from "@assets/generated_images/warm_sage_serenity_tea.png";
+import royalVelvetImg from "@assets/generated_images/hot_royal_velvet_drink.png";
 
 export interface FlavorProfile {
   temperature: "Iced" | "Warm" | "Hot" | "Frozen";
@@ -176,6 +176,10 @@ export function generateDrink(selectedTraits: PersonalityTrait[]): DrinkResult {
       return noteMap[name] || name;
     });
 
+  const selectedTemp = template.temperatures[0];
+  const selectedSweetness = template.sweetness[0];
+  const selectedIntensity = template.intensity[0];
+
   const traitExplanations = selectedTraits
     .map(t => traitDescriptions[t.id] || t.name.toLowerCase())
     .join(", ");
@@ -184,11 +188,11 @@ export function generateDrink(selectedTraits: PersonalityTrait[]): DrinkResult {
 
   return {
     drinkName: template.name,
-    description: `A ${template.temperatures[0].toLowerCase()} masterpiece crafted for souls who embody ${selectedTraits.slice(0, 2).map(t => t.name.toLowerCase()).join(" and ")}. This ${template.intensity[0].toLowerCase()} blend offers a ${template.sweetness[0].toLowerCase()} experience that evolves with every sip.`,
+    description: `A ${selectedTemp.toLowerCase()} masterpiece crafted for souls who embody ${selectedTraits.slice(0, 2).map(t => t.name.toLowerCase()).join(" and ")}. This ${selectedIntensity.toLowerCase()} blend offers a ${selectedSweetness.toLowerCase()} experience that evolves with every sip.`,
     flavorProfile: {
-      temperature: template.temperatures[Math.floor(Math.random() * template.temperatures.length)],
-      sweetness: template.sweetness[Math.floor(Math.random() * template.sweetness.length)],
-      intensity: template.intensity[Math.floor(Math.random() * template.intensity.length)],
+      temperature: selectedTemp,
+      sweetness: selectedSweetness,
+      intensity: selectedIntensity,
       notes: [...template.baseNotes, ...additionalNotes],
     },
     whyMatch,
