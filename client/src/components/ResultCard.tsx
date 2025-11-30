@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,95 +25,100 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  const generatePDF = () => {
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
+  const generateSummaryPNG = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 1600;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.fillStyle = "#f3f0e9";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    let yPos = 100;
+
+    ctx.font = "bold 60px Montserrat";
+    ctx.fillStyle = "#00704A";
+    ctx.textAlign = "center";
+    ctx.fillText("My Personality Drink", canvas.width / 2, yPos);
+
+    yPos += 100;
+    ctx.font = "40px Open Sans";
+    ctx.fillStyle = "#1E3932";
+    ctx.fillText(result.drinkName, canvas.width / 2, yPos);
+
+    yPos += 80;
+    ctx.font = "24px Open Sans";
+    ctx.fillStyle = "#505050";
+    ctx.textAlign = "left";
+    const descLines = result.description.match(/.{1,60}/g) || [];
+    descLines.forEach((line) => {
+      ctx.fillText(line, 60, yPos);
+      yPos += 40;
     });
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    let yPosition = 20;
+    yPos += 40;
+    ctx.font = "bold 36px Montserrat";
+    ctx.fillStyle = "#00704A";
+    ctx.fillText("Flavor Profile", 60, yPos);
 
-    doc.setFillColor(243, 240, 233);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    doc.setFont("Montserrat", "bold");
-    doc.setFontSize(24);
-    doc.setTextColor(0, 112, 74);
-    doc.text("My Personality Drink", pageWidth / 2, yPosition, { align: "center" });
-
-    yPosition += 15;
-    doc.setFont("Open Sans", "normal");
-    doc.setFontSize(12);
-    doc.setTextColor(30, 57, 50);
-    doc.text(result.drinkName, pageWidth / 2, yPosition, { align: "center" });
-
-    yPosition += 12;
-    doc.setFont("Open Sans", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(80, 80, 80);
-    const wrappedDescription = doc.splitTextToSize(result.description, pageWidth - 20);
-    doc.text(wrappedDescription, 10, yPosition);
-
-    yPosition += wrappedDescription.length * 5 + 10;
-
-    doc.setFont("Montserrat", "bold");
-    doc.setFontSize(14);
-    doc.setTextColor(0, 112, 74);
-    doc.text("Flavor Profile", 10, yPosition);
-
-    yPosition += 8;
-    doc.setFont("Open Sans", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(30, 57, 50);
-
-    const profileData = [
-      [`Temperature: ${result.flavorProfile.temperature}`],
-      [`Sweetness: ${result.flavorProfile.sweetness}`],
-      [`Intensity: ${result.flavorProfile.intensity}`],
+    yPos += 60;
+    ctx.font = "28px Open Sans";
+    ctx.fillStyle = "#1E3932";
+    const profileInfo = [
+      `Temperature: ${result.flavorProfile.temperature}`,
+      `Sweetness: ${result.flavorProfile.sweetness}`,
+      `Intensity: ${result.flavorProfile.intensity}`,
     ];
-
-    profileData.forEach((row) => {
-      doc.text(row[0], 15, yPosition);
-      yPosition += 6;
+    profileInfo.forEach((info) => {
+      ctx.fillText(info, 80, yPos);
+      yPos += 50;
     });
 
-    yPosition += 4;
-    doc.setFont("Montserrat", "bold");
-    doc.setFontSize(11);
-    doc.text("Notes:", 15, yPosition);
-    yPosition += 5;
+    yPos += 20;
+    ctx.font = "bold 32px Montserrat";
+    ctx.fillStyle = "#00704A";
+    ctx.fillText("Notes:", 80, yPos);
 
-    doc.setFont("Open Sans", "normal");
-    doc.setFontSize(9);
+    yPos += 50;
+    ctx.font = "24px Open Sans";
+    ctx.fillStyle = "#1E3932";
     result.flavorProfile.notes.forEach((note) => {
-      doc.text(`• ${note}`, 18, yPosition);
-      yPosition += 4;
+      ctx.fillText(`• ${note}`, 100, yPos);
+      yPos += 40;
     });
 
-    yPosition += 6;
-    doc.setFont("Montserrat", "bold");
-    doc.setFontSize(14);
-    doc.setTextColor(0, 112, 74);
-    doc.text("Why This Drink?", 10, yPosition);
+    yPos += 40;
+    ctx.font = "bold 36px Montserrat";
+    ctx.fillStyle = "#00704A";
+    ctx.fillText("Why This Drink?", 60, yPos);
 
-    yPosition += 8;
-    doc.setFont("Open Sans", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(80, 80, 80);
-    const wrappedWhyMatch = doc.splitTextToSize(result.whyMatch, pageWidth - 20);
-    doc.text(wrappedWhyMatch, 10, yPosition);
+    yPos += 60;
+    ctx.font = "22px Open Sans";
+    ctx.fillStyle = "#505050";
+    const whyLines = result.whyMatch.match(/.{1,70}/g) || [];
+    whyLines.forEach((line) => {
+      ctx.fillText(line, 60, yPos);
+      yPos += 35;
+    });
 
-    yPosition += wrappedWhyMatch.length * 4 + 10;
+    yPos += 40;
+    ctx.font = "italic 20px Open Sans";
+    ctx.fillStyle = "#808080";
+    ctx.textAlign = "center";
+    ctx.fillText("Generated by Personality Blender", canvas.width / 2, canvas.height - 40);
 
-    doc.setFont("Open Sans", "italic");
-    doc.setFontSize(8);
-    doc.setTextColor(120, 120, 120);
-    doc.text("Generated by Personality Blender", pageWidth / 2, pageHeight - 10, { align: "center" });
-
-    doc.save(`${result.drinkName.replace(/\s+/g, "-").toLowerCase()}-personality-drink-summary.pdf`);
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${result.drinkName.replace(/\s+/g, "-").toLowerCase()}-personality-drink-summary.png`;
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    });
   };
 
   const handleDownloadCard = async () => {
@@ -142,11 +146,11 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
         document.body.removeChild(link);
       }, 100);
 
-      generatePDF();
+      generateSummaryPNG();
 
       toast({
         title: `${result.drinkName} - Downloaded!`,
-        description: `Card image & summary PDF downloaded. Temperature: ${result.flavorProfile.temperature} • Sweetness: ${result.flavorProfile.sweetness} • Intensity: ${result.flavorProfile.intensity}`,
+        description: `Card image & summary PNG downloaded. Temperature: ${result.flavorProfile.temperature} • Sweetness: ${result.flavorProfile.sweetness} • Intensity: ${result.flavorProfile.intensity}`,
         duration: 5000,
       });
     } catch (error) {
