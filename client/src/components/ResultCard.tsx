@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { DrinkResult } from "@/lib/drinkGenerator";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Thermometer, 
   Droplets, 
@@ -11,7 +12,8 @@ import {
   Sparkles, 
   RotateCcw,
   Share2,
-  Download
+  Download,
+  Check
 } from "lucide-react";
 
 interface ResultCardProps {
@@ -21,6 +23,7 @@ interface ResultCardProps {
 
 export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const handleDownloadCard = async () => {
     if (!cardRef.current) return;
@@ -46,9 +49,19 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
       setTimeout(() => {
         document.body.removeChild(link);
       }, 100);
+
+      toast({
+        title: `${result.drinkName} - Downloaded!`,
+        description: `Temperature: ${result.flavorProfile.temperature} • Sweetness: ${result.flavorProfile.sweetness} • Intensity: ${result.flavorProfile.intensity} • Notes: ${result.flavorProfile.notes.slice(0, 2).join(", ")}`,
+        duration: 5000,
+      });
     } catch (error) {
       console.error("Failed to download card:", error);
-      alert("Failed to download card image. Please try again.");
+      toast({
+        title: "Download Failed",
+        description: "Failed to download card image. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
