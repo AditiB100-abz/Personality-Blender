@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import TraitCard from "./TraitCard";
 import type { PersonalityTrait } from "@/lib/personalityData";
 import { Blend, Coffee } from "lucide-react";
+import { startBlenderSound, stopBlenderSound } from "@/lib/blenderSound";
 
 interface BlenderContainerProps {
   selectedTraits: PersonalityTrait[];
@@ -20,22 +21,18 @@ export default function BlenderContainer({
   isBlending,
 }: BlenderContainerProps) {
   const [isDragOver, setIsDragOver] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const canBlend = selectedTraits.length >= 4 && selectedTraits.length <= 5;
 
   useEffect(() => {
-    audioRef.current = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleyhWoH6LgoF9d3hyhIeQgWlNR1d8qt/8u14QAIV5gpB+bWRfaHeHlIVwWU9abYWfr51tOyQ5Z5m3xKJpKwMrkdXzznodAEC54d+sbTcHNJbZ6tCPVBcLR6LP4tKUVx8ROH6u3POtYAcAKoq9xaeAWD0sNGOQsLqgjGo/LEZlhau9qod0Yz0vO1t3ka+2oot0XEQ8TGR/nrO0nIBlQSs0UXGUtLeiimxONS06XXaWt7iih2dDKzBUdJq9w6WAXjYeJEt0m77LqIRbLxYdRnecy8upgFgqDRQ/cr/Z1qR7VCULEDt0w+TgqnxOHQMKOIDP6Oqsf1EbAAQ1g9Tt8K+BTRkABDF/1fL0sYJPFwACL4DZ9fW1g08YAAIuf9z4+biDThgAAy593/v8uoNOGAADLX3e+/27g04YAAMsfN78/byDThgAAyx83v3+vINOGAADLHze/f+9g04YAAMsfN7+/72DThgAAyx83v//vYNNGAADLHze////vYNNGAAELH3e/v/+vYNOFwADLH3f/v6+g04XAAMtfd/+/r6DThcAAy1+3/7/voNNFwADLX7g/v+/g00XAAM=");
-  }, []);
-
-  useEffect(() => {
-    if (isBlending && audioRef.current) {
-      audioRef.current.volume = 0.3;
-      audioRef.current.loop = true;
-      audioRef.current.play().catch(() => {});
-    } else if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if (isBlending) {
+      startBlenderSound();
+    } else {
+      stopBlenderSound();
     }
+    
+    return () => {
+      stopBlenderSound();
+    };
   }, [isBlending]);
 
   const handleDragOver = (e: React.DragEvent) => {
