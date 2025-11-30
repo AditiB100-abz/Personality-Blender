@@ -1,0 +1,150 @@
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import type { DrinkResult } from "@/lib/drinkGenerator";
+import { 
+  Thermometer, 
+  Droplets, 
+  Flame, 
+  Sparkles, 
+  RotateCcw,
+  Share2,
+  Coffee
+} from "lucide-react";
+
+interface ResultCardProps {
+  result: DrinkResult;
+  onBlendAgain: () => void;
+}
+
+export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: `My Personality Drink: ${result.drinkName}`,
+        text: `I just discovered my personality drink - ${result.drinkName}! ${result.description}`,
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(
+        `My Personality Drink: ${result.drinkName} - ${result.description}`
+      );
+      console.log("Copied to clipboard!");
+    }
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto animate-fade-in">
+      <Card className="p-8 md:p-10 overflow-visible">
+        <div className="flex flex-col items-center text-center gap-6">
+          <div 
+            className="w-24 h-24 rounded-full flex items-center justify-center shadow-lg"
+            style={{ 
+              background: `linear-gradient(135deg, ${result.gradientColors.join(", ")})` 
+            }}
+          >
+            <Coffee className="w-12 h-12 text-white drop-shadow-md" />
+          </div>
+
+          <div>
+            <h2 
+              className="text-2xl md:text-3xl font-bold font-['Montserrat'] text-foreground mb-3"
+              data-testid="text-drink-name"
+            >
+              {result.drinkName}
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground font-['Open_Sans'] leading-relaxed">
+              {result.description}
+            </p>
+          </div>
+
+          <div className="w-full grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Thermometer className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs text-muted-foreground font-['Montserrat'] uppercase tracking-wide">Temperature</p>
+                <p className="font-semibold font-['Montserrat'] text-foreground">{result.flavorProfile.temperature}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Droplets className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs text-muted-foreground font-['Montserrat'] uppercase tracking-wide">Sweetness</p>
+                <p className="font-semibold font-['Montserrat'] text-foreground">{result.flavorProfile.sweetness}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Flame className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs text-muted-foreground font-['Montserrat'] uppercase tracking-wide">Intensity</p>
+                <p className="font-semibold font-['Montserrat'] text-foreground">{result.flavorProfile.intensity}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs text-muted-foreground font-['Montserrat'] uppercase tracking-wide">Notes</p>
+                <p className="font-semibold font-['Montserrat'] text-foreground text-sm">
+                  {result.flavorProfile.notes.slice(0, 2).join(", ")}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 justify-center">
+            {result.flavorProfile.notes.map((note, index) => (
+              <Badge 
+                key={index} 
+                variant="secondary"
+                className="font-['Montserrat']"
+              >
+                {note}
+              </Badge>
+            ))}
+          </div>
+
+          <div className="w-full p-6 rounded-lg bg-muted/30 border border-border">
+            <h3 className="text-lg font-semibold font-['Montserrat'] text-foreground mb-3 flex items-center gap-2 justify-center">
+              <Sparkles className="w-5 h-5 text-chart-2" />
+              Why This Drink?
+            </h3>
+            <p className="text-muted-foreground font-['Open_Sans'] leading-relaxed">
+              {result.whyMatch}
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full">
+            <Button
+              onClick={onBlendAgain}
+              className="flex-1 font-['Montserrat'] font-semibold"
+              data-testid="button-blend-again"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Blend Again
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleShare}
+              className="flex-1 font-['Montserrat'] font-semibold"
+              data-testid="button-share"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Result
+            </Button>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+}
