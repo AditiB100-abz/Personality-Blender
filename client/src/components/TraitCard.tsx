@@ -45,7 +45,7 @@ export default function TraitCard({
   if (inBlender) {
     return (
       <div
-        className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/90 dark:bg-card/90 shadow-sm animate-fade-in group"
+        className="flex items-center gap-2 px-3 py-2 rounded-md bg-secondary dark:bg-card/90 shadow-sm animate-fade-in group border border-primary/20"
         style={{ borderLeft: `3px solid ${trait.color}` }}
       >
         <Icon className="w-4 h-4" style={{ color: trait.color }} />
@@ -70,7 +70,7 @@ export default function TraitCard({
       className={`
         p-4 cursor-grab active:cursor-grabbing transition-all duration-200
         flex flex-col items-center gap-2 text-center
-        hover-elevate active-elevate-2
+        hover-elevate active-elevate-2 bg-secondary border-primary/15
         ${isDragging ? "opacity-50 scale-95" : ""}
         ${isSelected ? "ring-2 ring-primary ring-offset-2" : ""}
         ${isDisabled && !isSelected ? "opacity-40 cursor-not-allowed" : ""}
