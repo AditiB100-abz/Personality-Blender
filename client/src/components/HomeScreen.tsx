@@ -9,13 +9,13 @@ interface HomeScreenProps {
 export default function HomeScreen({ onStart }: HomeScreenProps) {
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
-      <Card className="max-w-md w-full p-8 md:p-10 text-center overflow-visible">
+      <Card className="max-w-md w-full p-8 md:p-10 text-center overflow-visible bg-secondary border-2 border-primary/20">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-primary/15 flex items-center justify-center">
               <Coffee className="w-12 h-12 text-primary" />
             </div>
-            <div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-chart-2 flex items-center justify-center">
+            <div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -25,7 +25,7 @@ export default function HomeScreen({ onStart }: HomeScreenProps) {
               Personality Blender
             </h1>
             <p className="text-muted-foreground font-['Open_Sans'] text-base md:text-lg leading-relaxed">
-              Discover your signature drink based on your unique personality traits. 
+              Discover your signature Starbucks-inspired drink based on your unique personality traits. 
               Select 4-5 traits, blend them together, and reveal your perfect beverage match.
             </p>
           </div>

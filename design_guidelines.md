@@ -5,11 +5,11 @@ Reference-based design inspired by **Starbucks' coffeehouse aesthetic** - warm, 
 
 ## Color System
 - **Primary Green**: #00704A (Starbucks signature - buttons, accents, blender)
-- **Warm Gold**: #D4AF37 (highlights, badges, premium touches)
-- **Cream Background**: #F7F3E9 (main app background)
+- **Light Sage Green**: Lighter aesthetic Starbucks green - used for interior box backgrounds (cards, containers)
+- **Warm Cream Background**: Neutral cream tones for main app background - creates warm, welcoming atmosphere
 - **Dark Forest**: #1E3932 (primary text, headings)
 - **Coffee Brown**: #8B4513 (secondary accents, borders)
-- **Pure White**: #FFFFFF (card backgrounds, trait cards)
+- **Pure White**: #FFFFFF (premium touches, highlights)
 
 ## Typography
 - **Primary Font**: Montserrat (headings, buttons, trait labels) - weights: 600, 700
@@ -30,17 +30,17 @@ Reference-based design inspired by **Starbucks' coffeehouse aesthetic** - warm, 
 ## Component Library
 
 ### Home Screen
-- Centered welcome card with app logo/title area
+- Centered welcome card with Starbucks-oriented logo/title area
 - Brief tagline explaining the experience
 - Large "Start Blending" CTA button (primary green with gold hover state)
 - Subtle coffee-themed decorative elements or icon
 
 ### Trait Selection Interface
 - **Grid Layout**: 4-column grid (lg), 3-column (md), 2-column (sm) for 20 personality traits
-- **Trait Cards**: White background, rounded-lg (12px), shadow-md, 8px padding, hover lift effect (translate-y-1), cursor-grab when draggable
+- **Trait Cards**: Light sage green background, rounded-lg (12px), shadow-md, 8px padding, hover lift effect (translate-y-1), cursor-grab when draggable
 - **Card Content**: Icon or emoji representation, trait name in Montserrat SemiBold
 - **Visual States**: 
-  - Default: white background, subtle border
+  - Default: light sage green background, subtle border
   - Dragging: opacity-50, scaled down
   - Disabled (after 5 selected): opacity-40, cursor-not-allowed
 
@@ -53,17 +53,17 @@ Reference-based design inspired by **Starbucks' coffeehouse aesthetic** - warm, 
 
 ### Blend Button
 - Large, prominent button below blender
-- Primary green background (#00704A), white text
+- Primary green background (#00704A), white text with Starbucks-oriented styling
 - Disabled state when <4 or >5 traits (opacity-50, cursor-not-allowed)
 - Active state: triggers animation immediately
 
 ### Blender Animation
 - 1.5-second shake/spin CSS animation (rotation + translate)
 - Pulsing or glowing effect during blend
-- Use Web Audio API for blender sound effect (short 1.5s sound)
+- Blender sound effect plays during blend animation (1.5s duration)
 
 ### Result Card
-- **Layout**: Single centered card (max-w-2xl), white background, generous padding (p-10)
+- **Layout**: Single centered card (max-w-2xl), light sage green background, generous padding (p-10)
 - **Drink Name**: Large heading (2rem, Montserrat Bold, dark forest color)
 - **Drink Description**: 2-3 sentence tagline (Open Sans, 1.125rem)
 - **Flavor Profile Section**:
@@ -71,12 +71,18 @@ Reference-based design inspired by **Starbucks' coffeehouse aesthetic** - warm, 
   - Temperature, Sweetness, Intensity, Notes as labeled items
   - Visual indicators: badge-style pills in warm gold with icons
 - **Personality Match Explanation**: 
-  - Bordered section with cream background (#F7F3E9)
+  - Bordered section with light sage green background
   - "Why This Drink?" heading
   - 3-4 sentences connecting traits to drink characteristics
 - **Action Buttons**: 
   - "Blend Again" (primary green, full width on mobile, inline on desktop)
-  - "Share Result" (outline button, coffee brown border)
+  - "Share Result" (outline button, primary green border)
+
+## Branding & Logo
+- **Starbucks-Oriented Styling**: Use Starbucks green (#00704A) as primary brand color
+- **Coffee-Themed Icons**: Leverage coffee cup, coffee bean, and blender icons to reinforce brand identity
+- **Premium Aesthetic**: Light sage green cards against warm cream background creates elegant, premium feel
+- **Consistency**: Apply Starbucks-inspired design language throughout UI for cohesive brand experience
 
 ## Interactions & Animations
 - **Drag Feedback**: Smooth cursor changes, visual lift on hover, opacity change during drag
