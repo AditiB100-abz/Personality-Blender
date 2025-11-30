@@ -31,14 +31,21 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
         scale: 2,
         logging: false,
         useCORS: true,
+        allowTaint: true,
+        removeContainer: true,
+        width: cardRef.current.offsetWidth,
+        height: cardRef.current.offsetHeight,
       });
       
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
       link.download = `${result.drinkName.replace(/\s+/g, "-").toLowerCase()}-personality-drink.png`;
+      link.style.display = "none";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100);
     } catch (error) {
       console.error("Failed to download card:", error);
       alert("Failed to download card image. Please try again.");
@@ -62,7 +69,7 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-fade-in">
-      <Card ref={cardRef} className="p-8 md:p-10 overflow-visible bg-background">
+      <div ref={cardRef} className="bg-background rounded-lg border border-border shadow-lg p-8 md:p-10">
         <div className="flex flex-col items-center text-center gap-6">
           <div 
             className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-xl"
@@ -187,7 +194,7 @@ export default function ResultCard({ result, onBlendAgain }: ResultCardProps) {
             </Button>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
